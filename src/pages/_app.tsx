@@ -1,6 +1,19 @@
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
+// pages/_app.tsx
+import { AppProps } from 'next/app';
+import { ThemeProvider } from 'styled-components';
+import GlobalStyles from '../styles/GlobalStyles';
+import { theme } from '../styles/theme';
+import { SessionProvider } from 'next-auth/react';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  return (
+    <SessionProvider session={session}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </SessionProvider>
+  );
 }
+
+export default MyApp;
